@@ -153,17 +153,20 @@ function weapon_choice(idx) {
         frag+=`<tr><td/><td>${range.dist}</td><td>${range.th}</td><td>${range.ws}</td></tr>`;
     }
     frag+=`</tbody>`;
-    console.log(frag);
     //frag+='<tr><td colspan="4"><hr/></td></tr>'
     return frag;
 }
 
 // roll a stat
-function stat(sel) {
+function stat(sel, val) {
 	// 2d4 drop highest
 	let roll = Math.min(d4(), d4())
+	if (val != undefined && val !=null) {
+	    roll=val;
+	}
 	$(sel).text(roll)
 	$(sel+"C").text(roll)
+	return roll;
 }
 
 function body(name) {
@@ -208,7 +211,6 @@ function heal(sel) {
 }
 
 function level(sel) {
-    console.log(sel)
     // increase stat by 1 level
     let choice = null;
     if (sel == undefined) {
@@ -216,7 +218,6 @@ function level(sel) {
     }else {
         choice = sel;
     }
-    console.log(choice);
     
     let max = Number($("#"+choice).text());
     let cur = Number($("#"+choice+"C").text());
@@ -228,17 +229,39 @@ function level(sel) {
     }
 }
 
+function new_char() {
+    $("#level").text(0);
+    
+    
+	stat("#BR",0);
+	stat("#WT",0);
+	stat("#BW",0);
+	stat("#GT",0);
+	stat("#BD",0);
+	stat("#SH",0);
+	stat("#DG",0);
+	stat("#SP",0);
+	
+	abilities=[];
+	weapons=[];
+	choose_weapon(0);
+	update_abilities();
+}
+
 // roll all stats
 function roll_char() {
-    $("#level").text("0");
-	stat("#BR")
-	stat("#WT")
-	stat("#BW")
-	stat("#GT")
-	stat("#BD")
-	stat("#SH")
-	stat("#DG")
-	stat("#SP")
+    let level = 0;
+	level+=stat("#BR");
+	level+=stat("#WT");
+	level+=stat("#BW");
+	level+=stat("#GT");
+	level+=stat("#BD");
+	level+=stat("#SH");
+	level+=stat("#DG");
+	level+=stat("#SP");
+	
+    $("#level").text(level);
+	
 	abilities=[];
 	weapons=[];
 	choose_weapon(0);
@@ -254,23 +277,180 @@ function roll_char() {
 var classes = {
     fighter: [
         { name: "Ambidextrous",
-            cost: 2,
+            cost: 4,
             desc: "You have practiced with your weapons to the point that you are proficient enough to use one in each hand. You may use 2 attacks with one handed weapons per turn.",
         },
         { name: "Expert Fighter",
-            cost: 1,
+            cost: 2,
             desc: "You have learned to be precise with your strikes and can control where you wound your opponent. You may roll +1d10 when determining a hit location choosing whichever die you feel is more favorable.</br>This ability may be taken more than once.",
         },
         { name: "Blade Master",
-            cost: 4,
+            cost: 2,
             desc: "You are adept at using flashy twirls and spins with your blade to confuse your opponent. You gain +1d10 to your attack rolls with swords."
         },
+        { name: "Trained Offence",
+            cost: 4,
+            desc: "You have spent long hours practicing your fencing follow up attacks. You get one extra close combat attack with swords and knives",        
+        },
+        { name: "Light Strikes",
+            cost: 4,
+            desc: "You keep your sword moving lightly causing many small wounds on your opponent. You strike three times in melee at -2 Weapon strength. All strike mut be at the same target."
+        },
     ],
-    rouge: [],
-    duelist: [],
-    monk: [],
-    sage: [],
-    noble: [],
+    archer: [
+        { name: "Deadeye",
+            cost: 2,
+            desc: "You are an expert marksman and know how to shoot accurately. You may roll +1d10 when determining a hit location choosing whichever die you feel is more favorable.</br>This ability may be taken more than once."
+        },
+        {name: "Swift Reload",
+            cost: 4,
+            desc: "You have drilled reloading your weapon to the point that you can do it without thinking. You may reload two weapons per turn or reload and take bonus action",
+        },
+        {name: "Keen Aim",
+            cost: 2,
+            desc: "You have practiced with your weapon of choice and get +1d10 to ranged attacks.",
+        },
+        {name: "Double Shot",
+            cost: 3,
+            desc: "You have found a clever way to load your weapon twice and shoot two projectiles. If your weapon has been loaded twice it can do twice the normal number of hits.",
+        },
+    ],
+    thief: [
+        { name: "Lockpicking",
+            cost: 2,
+            desc: "You have learned to manipulate the intricate nature of a lock. When attempting to pick a lock you have +1d10. <br/> This ability may be taken more than once.",
+        },
+        { name: "Deception",
+            cost: 5,
+            desc: "Fast-talkers, sympathetic characters, and seductresses are adept at making others believe them even to their advantage. You may attempt to deceive another character. If you win an opposed WITS test, then until your next turn the deceived character will try to help you.",
+        },
+        { name: "Reflexive Reaction",
+            cost: 3,
+            desc: "You can sense your opponents next move. You may take an opposed WITS test with any opponent within 10\" at any point before the opponent activates. If you win, you may activate before your opponent",
+        },
+        { name: "Camouflage",
+            cost: 2,
+            desc: "You know how to use the terrain to hide yourself. If you are prone or have not moved more than 1\" during your last activation your have +1d10 to avoid being hit",
+        },
+        { name: "Observant",
+            cost: 2,
+            desc: "You have honed your sense of situational awareness. You may take a WITS test to detect unnatural influences in environments your are familiar with. You also gain +1d10 when attempting to spot hidden characters and objects.",
+        },
+        { name: "Stalking",
+            cost: 5,
+            desc: "You can avoid being watched and silently track your target. On a successful opposed WITS test you are hidden. Others may attempt to locate you must pass a WITS stat test. While stalking you move at -1 SPEED.<br/><br/>When hidden you are denoted with two face down tokens, one of which is marked on its face side. The controlling player can move all tokens simultaneously. This character can add additional false tokens by passing another opposed BRAINS test.",
+        }
+    ],
+    assassin: [
+        { name: "Knife Thrower",
+            cost: 3,
+            desc: "You are an excellent knife fighter. You prefer the silence of a blade and can throw it with great accuracy. You may use your BLADE stat for any ranged combat attack with a knife.",
+        },
+        { name: "Backstab",
+            cost: 3,
+            desc: "You have learned to creep up on a target from behind to strike quickly. If you attack an opponent from behind you get +1 Weapon Strength and can roll +1d10 when determining a hit location choosing whichever die you feel is more favorable.",
+        },
+        { name: "Poison",
+            cost: 3,
+            desc: "You have developed a familiarity with various poisons. You can poison an item with a successful BRAINS check. When affected by poison a character must pass a BRAWN check or take a wound. This effect lasts 3 turns.",
+        },
+        { name: "Concealed Weapon",
+            cost: 2,
+            desc: "You have learned to conceal weapons about your person. When you are attacked in combat and have not already activated, you may attack before your opponent.",
+        },
+    ],
+    duelist: [
+        { name: "Feint",
+            cost: 1 ,
+            desc: "you have trained extensively in the fine art of the counterattack. If you defend an attack by more than 5 the attacker takes a wound.",
+        },
+        { name: "Stalwart Defender",
+            cost: 1,
+            desc: "You never yield ground even under pressure. You may take a GUTS stat test to attempt to not be forced to move after an attack."
+        },
+        { name: "Rush Attack",
+            cost: 1,
+            desc: "You can strike in close combat and continue your movement",
+        },
+        { name: "Pushback",
+            cost: 1,
+            desc: "You can push an opposing character back up to 1\" if you score a melee hit on them.",
+        },
+        { name: "Drawback",
+            cost: 1,
+            desc: "If you score a hit in melee, you can retreat 1\"."
+        },
+        { name: "Turnabout",
+            cost: 1,
+            desc: "If you score a hit in melee, you can swap places with the opposing character"
+        },
+        { name: "Repulse",
+            cost: 1,
+            desc: "If this character avoids a hit in melee, you can push the attacker back up to 1\"",
+        },
+    ],
+    monk: [
+        { name: "Brawler",
+            cost: 2,
+            desc: "You prefer to get your hands dirty and pummel your opponents bare handed. You get +1d10 and +1 Weapon Strength when using your fists.",
+        },
+        { name: "Flurry of Blows",
+            cost: 3,
+            desc: "You are skilled in close combat and able to strike repeatedly. You recieve +1 close combat attack with non-bladed weapons. This can be taken up multiple times",
+        },
+        { name: "Iron Will",
+            cost: 3,
+            desc: "You can force yourself to shake off the effects of wounds. By passing a GUTS stat test, your ability scores never drop below 0.",
+        },
+        { name: "Battle Cry",
+            cost: 2,
+            desc: "You let out a terrifying scream when charging into combat. Any opponent charged by a you must take a GUTS stat test or withdraw from combat and receive -1d10 to this attack.",
+        },
+        { name: "Frenzy",
+            cost: 4,
+            desc: "You can work yourself into a fighting frenzy ignoring all else in favor of the bloodlust. By spending an action the model becomes Frenzied.<br/>When Frenzied you:<br/> - Ignore all GUTS checks<br/> - Can only run, charge, and attack <br/> - +2 Weapon Strength",
+        },
+        { name: "Intimidate",
+            cost: 3,
+            desc: "You cause enemies to hesitate in fear. Any opponent within 6\" must take a GUTS stat test or be unable to act against you.",
+        },
+        { name: "Mighty Cleave",
+            cost: 5,
+            desc: "You are strong enough to hack through opponents and hit someone behind them. You may attack all models within reach of your primary weapon with a single action. For each attack that fails to hit you suffer -1 To hit the next opponent. Mighty Cleave can only be used with bladed weapons",
+        },
+    ],
+    sage: [
+        { name: "Polymath",
+            cost: 3,
+            desc: "You have been around enough to pick up on bits and pieces of many skills. You may attempt to use Arcane Studies, Healer, and Language without possesing the skills. However you must make all tests for the skill with a BRAINS score of 1",
+        },
+        { name: "Healer",
+            cost: 2,
+            desc: "You are skilled at healing your friends. You may attempt to heal someone with a successful BRAINS stat test. If taken more than once you have +1d10 on your attempt. This may only be taken twice",
+        },
+        { name: "Language",
+            cost: 3,
+            desc: "You have learned many different languages, both those alive and long dead. When deciphering a language you do not know you may attempt a BRAINS stat test to decipher it correctly.",
+        },
+        { name: "Arcane Studies",
+            cost: 6,
+            desc: "You have studied the fine points of magic. You may use magic you find by passing a BRAINS test."
+        },
+    ],
+    noble: [
+        { name: "Inspiring",
+            cost: 3,
+            desc: "You know just the right things to say to inspire others to greatness. If you are within 3\" you may attempt to inspire someone by making a WITS test. An inspired character can add 1d10 to a future roll, this effect does not stack.",
+        },
+        { name: "Minions",
+            cost: 5,
+            desc: "You can withhold deploying any characters under your control until you use this ability. On a successful BRAINS stat test you can deploy any number of other characters you control within 3\" of yourself. They cannot be deployed within 1\" of an opponent.",
+        },
+        { name: "Voice of Command",
+            cost: 4,
+            desc: "You bellow out orders that can be heard over the din of battle. If you have not activated this turn you may trade activation with any friendly character in line of sight for free. Addionally once per turn, you may steal a friendly characters activation on an opposed BRAINS check.",
+        },
+    ],
 };
 
 var selected_class = Object.keys(classes)[0];
