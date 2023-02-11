@@ -1,0 +1,57 @@
+body {
+	background: #222;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.button:hover {
+  background: orange;
+}
+
+a:hover {
+  text-decoration: none !important;
+  color: orange;
+}
+
+th, td {
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.main {
+  width: 80%;
+  height: 100%;
+  margin-left: 10%;
+  margin-right: 10%;
+  overflow-y: auto;
+}
+
+.horizontal {
+	display: flex;
+	flex-direction: row;
+}
+
+.vertical {
+	display: flex;
+	flex-direction: column;
+}
+
+.score {
+	padding-left: 1ch;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    height: 21rem;
+    min-width: 50%;
+    overflow-y: auto;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}

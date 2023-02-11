@@ -1,0 +1,27 @@
+body {
+    background: white;
+}
+
+a {
+  display: none;
+}
+
+button {
+  display: none;
+}
+
+.framed-grey {
+  border-right: 1px solid black;
+}
+
+h1 {
+  font-size: 1.1em;
+}
+
+stat {
+  display: none;
+}
+
+.ac {
+  display: none;
+}
