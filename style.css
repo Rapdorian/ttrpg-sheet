@@ -1,7 +1,7 @@
 body {
-	background: #222;
-	width: 100%;
-	margin: 0 auto;
+  background: #222;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .button:hover {
@@ -13,7 +13,8 @@ a:hover {
   color: orange;
 }
 
-th, td {
+th,
+td {
   padding-bottom: 5px;
   text-align: left;
 }
@@ -27,29 +28,29 @@ th, td {
 }
 
 .horizontal {
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .vertical {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .score {
-	padding-left: 1ch;
+  padding-left: 1ch;
 }
 
 .center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .column {
-    height: 21rem;
-    width: 50%;
-    overflow-y: auto;
+  height: 21rem;
+  min-width: 50%;
+  overflow-y: auto;
 }
 
 .wrap {

@@ -16,7 +16,7 @@ function save() {
     fetch_stat("SH");
     fetch_stat("DG");
     fetch_stat("SP");
-    
+
     localStorage.setItem("stats", JSON.stringify(stats));
     localStorage.setItem("weapons", JSON.stringify(weapons));
     localStorage.setItem("abilities", JSON.stringify(abilities));
@@ -42,7 +42,7 @@ function load() {
     }
     update_weapons();
     update_abilities();
-    
+
 }
 
 var known_weapons = [
@@ -210,7 +210,10 @@ function heal(sel) {
     }
 }
 
-function level(sel) {
+function level(sel, amt) {
+    if (amt == undefined) {
+      amt = 1;
+    }
     // increase stat by 1 level
     let choice = null;
     if (sel == undefined) {
@@ -221,16 +224,16 @@ function level(sel) {
     
     let max = Number($("#"+choice).text());
     let cur = Number($("#"+choice+"C").text());
-    $("#"+choice).text(max+1);
-    $("#level").text(Number($("#level").text()) + 1);
+    $("#"+choice).text(max+amt);
+    $("#level").text(Number($("#level").text()) + amt);
     // only increase current HP if no damage is taken
     if (max === cur) {
-        $("#"+choice+"C").text(cur+1);
+        $("#"+choice+"C").text(cur+amt);
     }
 }
 
 function new_char() {
-    $("#level").text(0);
+    $("#level").text(-18);
     
     
 	stat("#BR",0);
@@ -238,7 +241,7 @@ function new_char() {
 	stat("#BW",0);
 	stat("#GT",0);
 	stat("#BD",0);
-	stat("#SH",0);
+	stat("#SH",0); 
 	stat("#DG",0);
 	stat("#SP",0);
 	
@@ -250,7 +253,7 @@ function new_char() {
 
 // roll all stats
 function roll_char() {
-    let level = 0;
+    let level = -18;
 	level+=stat("#BR");
 	level+=stat("#WT");
 	level+=stat("#BW");
@@ -459,6 +462,7 @@ var known_abilities = classes[selected_class];
 var abilities = [];
 
 function update_abilities() {
+    $("#abilities").html("");
     $("#abilities").html(abilities.join(""));
 }
 
@@ -468,8 +472,9 @@ function choose_ability(idx) {
     cancel_ability();
 }
 
-function remove_ability(idx) {
+function remove_ability(idx, cost) {
     abilities.splice(idx, 1);
+    $("#level").text(Number($("#level").text()) - cost)
     update_abilities();
 }
 
@@ -528,7 +533,7 @@ function render_ability(idx, choice, pos) {
     let button = "";
     let cost = "";
     if (!choice) {
-        //trash = `<a onclick="remove_ability(${pos})";> &#128465; </a>`;
+        trash = `<a onclick="remove_ability(${pos}, ${ability.cost})";> &#128465; </a>`;
     }else{
         button=`class="button" onclick="choose_ability(${idx});"`;
         cost=`${ability.cost} XP`;

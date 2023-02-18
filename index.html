@@ -1,133 +1,182 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.3/cash.min.js"></script>
-		<script src="rpgui.min.js"></script>
-		<link href="rpgui.min.css" media="screen" rel="stylesheet" type="text/css" >
-		<link href="style.css" rel="stylesheet" type="text/css" >
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.3/cash.min.js"></script>
+    <script src="rpgui.min.js"></script>
+    <link
+      href="rpgui.min.css"
+      media="screen"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" media="print" href="print.css" />
-		<script src="script.js"></script>
-	</head>
-	<body class="rpgui-content">
-		<div id="root" class="main rpgui-container framed" style="padding: 1ch;">			
-			<div class="horizontal">
-				<button onclick="new_char();" class="rpgui-button"> New </button>
-				<button onclick="roll_char();" class="rpgui-button"> Roll </button>
-				<button class="rpgui-button" onclick="save();"> Save </button>
-				
-				<div style="width: 100%">
-				  <button class="rpgui-button" style="float: right;"> ? </button>
-				</div>
-				
-			</div>
+    <script src="script.js"></script>
+  </head>
+  <body class="rpgui-content">
+    <div id="root" class="main rpgui-container framed" style="padding: 1ch">
+      <div class="horizontal">
+        <button onclick="new_char();" class="rpgui-button">New</button>
+        <button onclick="roll_char();" class="rpgui-button">Roll</button>
+        <button class="rpgui-button" onclick="save();">Save</button>
 
-			<hr/>
-			
-          <div class="horizontal"> 
-            <p>Level:</p> <p id="level"> 0 </p>
+        <div style="width: 100%">
+          <button class="rpgui-button" style="float: right">?</button>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="horizontal">
+        <p>Level:</p>
+        <p id="level">0</p>
+      </div>
+      <div class="horizontal wrap">
+        <div
+          class="column vertical rpgui-container framed-golden"
+          style="position: static"
+        >
+          <table id="stats">
+            <tr>
+              <th>Limb</th>
+              <th>AC</th>
+              <th>Stat</th>
+              <th>Max</th>
+              <th>Current</th>
+            </tr>
+
+            <tr>
+              <td>Head</td>
+              <td rowspan="2" id="HAC"><stat>0</stat></td>
+              <td>Brains</td>
+              <td id="BR">0</td>
+              <td>
+                <stat id="BRC"> 0 </stat>
+                <a onclick="level('BR');"> &#8593; </a>
+                <a onclick="level('BR', -1);"> &#8595; </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <a onclick="damage('head');"> &#128481; </a>
+                <a onclick="heal('head');"> &#9829; </a>
+              </td>
+              <td>Wits</td>
+              <td id="WT">0</td>
+              <td>
+                <stat id="WTC"> 0 </stat>
+                <a onclick="level('WT');"> &#8593; </a>
+                <a onclick="level('WT', -1);"> &#8595; </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Body</td>
+              <td rowspan="2" id="BAC"><stat>0</stat></td>
+              <td>Brawn</td>
+              <td id="BW">0</td>
+              <td>
+                <stat id="BWC"> 0 </stat>
+                <a onclick="level('BW');"> &#8593; </a>
+                <a onclick="level('BW', -1);"> &#8595; </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a onclick="damage('body');"> &#128481; </a>
+                <a onclick="heal('body');"> &#9829; </a>
+              </td>
+              <td>Guts</td>
+              <td id="GT">0</td>
+              <td>
+                <stat id="GTC"> 0 </stat>
+                <a onclick="level('GT');"> &#8593; </a>
+                <a onclick="level('GT', -1);"> &#8595; </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Arms</td>
+              <td rowspan="2" id="AAC"><stat>0</stat></td>
+              <td>Blade</td>
+              <td id="BD">0</td>
+              <td>
+                <stat id="BDC"> 0 </stat>
+                <a onclick="level('BD');"> &#8593; </a>
+                <a onclick="level('BD', -1);"> &#8595; </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a onclick="damage('arms');"> &#128481; </a>
+                <a onclick="heal('arms');"> &#9829; </a>
+              </td>
+              <td>Shoot</td>
+              <td id="SH">0</td>
+              <td>
+                <stat id="SHC"> 0 </stat>
+                <a onclick="level('SH');"> &#8593; </a>
+                <a onclick="level('SH', -1);"> &#8595; </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Legs</td>
+              <td rowspan="2" id="LAC"><stat>0</stat></td>
+              <td>Dodge</td>
+              <td id="DG">0</td>
+              <td>
+                <stat id="DGC"> 0 </stat>
+                <a onclick="level('DG');"> &#8593; </a>
+                <a onclick="level('DG', -1);"> &#8595; </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a onclick="damage('legs');"> &#128481; </a>
+                <a onclick="heal('legs');"> &#9829; </a>
+              </td>
+              <td>Speed</td>
+              <td id="SP">0</td>
+              <td>
+                <stat id="SPC"> 0 </stat>
+                <a onclick="level('SP');"> &#8593; </a>
+                <a onclick="level('SP', -1);"> &#8595; </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div
+          class="column vertical rpgui-container framed-golden"
+          style="position: static"
+        >
+          <table id="weapons"></table>
+          <div id="add_weapon" class="center">
+            <button
+              id="pick_weapon"
+              class="rpgui-button"
+              onclick="show_weapon_menu();"
+            >
+              +
+            </button>
+            <button class="rpgui-button" onclick="reset_weapons();">
+              Clear
+            </button>
           </div>
-			<div class="horizontal wrap">
-			  <div class="column vertical rpgui-container framed-golden" style="position:static;">
-
-
-			    <table id="stats">
-				    <tr>
-					    <th> Limb </th>
-					    <th> AC </th>
-					    <th> Stat </th>  
-					    <th> Max </th>
-					    <th> Current </th>
-				    </tr>
-
-					    <tr>
-						    <td>Head
-						    </td> 
-						    <td rowspan="2" id="HAC"><stat>0</stat></td>
-						    <td> Brains </td>
-						    <td id="BR"> 0 </td>
-						    <td>
-						      <stat id="BRC"> 0 </stat>
-						      <a onclick="level('BR');"> &#11014; </a>
-						    </td>
-					    </tr>
-
-					    <tr>
-					      <td>
-						      <a onclick="damage('head');"> &#128481; </a>
-						      <a onclick="heal('head');"> &#9829; </a> </td>
-						    <td> Wits </td>
-						    <td id="WT"> 0 </td>
-						    <td>
-						      <stat id="WTC"> 0 </stat>
-						      <a onclick="level('WT');"> &#11014; </a>
-						    </td>
-					    </tr>
-
-					    <tr> 
-						    <td>Body
-						    </td>
-						    <td rowspan="2" id="BAC"><stat>0</stat></td>
-						    <td> Brawn </td>
-						    <td id="BW"> 0 </td>
-						    <td><stat id="BWC"> 0 </stat> <a onclick="level('BW');"> &#11014; </a></td>
-     					</tr>
-					    <tr>
-					      <td> 
-						      <a onclick="damage('body');"> &#128481; </a>
-						      <a onclick="heal('body');"> &#9829; </a> </td>
-						    <td> Guts </td>
-						    <td id="GT"> 0 </td>
-						    <td><stat id="GTC"> 0 </stat> <a onclick="level('GT');"> &#11014; </a></td>
-					    </tr>
-
-					    <tr>
-						    <td>Arms</td>
-						    <td rowspan="2" id="AAC"> <stat>0</stat> </td>
-						    <td> Blade </td>
-						    <td id="BD"> 0 </td>
-						    <td><stat id="BDC"> 0 </stat> <a onclick="level('BD');"> &#11014; </a></td>
-					    </tr>
-					    <tr>
-					    <td> 
-						      <a onclick="damage('arms');"> &#128481; </a>
-						      <a onclick="heal('arms');"> &#9829; </a> </td>
-						    <td> Shoot </td>
-						    <td id="SH"> 0 </td>
-						    <td><stat id="SHC"> 0 </stat> <a onclick="level('SH');"> &#11014; </a></td>
-					    </td>
-
-					    <tr>
-						    <td>Legs</td>
-						    <td rowspan="2" id="LAC"> <stat>0</stat> </td>
-						    <td> Dodge </td>
-						    <td id="DG"> 0 </td>
-						    <td><stat id="DGC"> 0 </stat> <a onclick="level('DG');"> &#11014; </a></td>
-					    </tr>
-					    <tr>
-					    <td> 
-						      <a onclick="damage('legs');"> &#128481; </a>
-						      <a onclick="heal('legs');"> &#9829; </a> </td>
-						    <td> Speed </td>
-						    <td id="SP"> 0 </td>
-						    <td><stat id="SPC"> 0 </stat> <a onclick="level('SP');"> &#11014; </a></td>
-					    </tr>
-			    </table>
-			  </div>
-			  <div class="column vertical rpgui-container framed-golden" style="position:static;">
-			    <table id="weapons">
-			    </table>
-			    <div id="add_weapon" class="center" >
-			      <button id="pick_weapon"class="rpgui-button" onclick="show_weapon_menu();"> + </button> 
-			      <button class="rpgui-button" onclick="reset_weapons();"> Clear </button>
-			    </div>
-			    </div>
-			  </div>
-			  <div id="abilities">
-			  </div>
-			  <div class="center">
-			    <button id="ability_pick" class="rpgui-button" onclick="pick_ability();"> + </button>
-			  </div>
-			</div>
-		</div>
-	</body>
+        </div>
+      </div>
+      <p>Skills:</p>
+      <div id="abilities"></div>
+      <div class="center">
+        <button
+          id="ability_pick"
+          class="rpgui-button"
+          onclick="pick_ability();"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </body>
 </html>
