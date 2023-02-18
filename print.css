@@ -25,3 +25,12 @@ stat {
 .ac {
   display: none;
 }
+
+.no-print {
+  display: none;
+}
+
+input {
+  border: 0px solid;
+  font-size: 2em;
+}

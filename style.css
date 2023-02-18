@@ -8,6 +8,10 @@ body {
   background: orange;
 }
 
+h2 {
+  text-align: left !important;
+}
+
 a:hover {
   text-decoration: none !important;
   color: orange;

@@ -540,7 +540,7 @@ function render_ability(idx, choice, pos) {
     }
     return `
     <div ${button}>
-        <h1> ${ability.name} ${trash}</h1>
+        <h2> ${ability.name} ${trash}</h2>
         ${cost}
         <p> ${ability.desc} </p>
     </div>
